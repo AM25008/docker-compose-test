@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  mysql-api:
+    image: mysql:8.0
+    container_name: mysql-api
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: miapi_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_api_data:/var/lib/mysql
+    command: --bind-address=0.0.0.0
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_api_data:
